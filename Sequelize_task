@@ -1,0 +1,155 @@
+const { Sequelize, DataTypes } = require("sequelize");
+
+const sequelize = new Sequelize("social_network", "root", "", {
+  host: "localhost",
+  dialect: "mysql",
+});
+
+// модель 1 
+
+const User = sequelize.define(
+  "User",
+  {
+   
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    first_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    photo_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    birthday: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    country: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    gender: {
+      type: DataTypes.ENUM(["male", "female"]),
+      allowNull: true,
+    },
+    balance: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+      defaultValue: 0,
+    },
+  },
+  {
+    
+    tableName: "users",
+    timestamps: false,
+  }
+);
+
+// модель 2
+
+const Posty = sequelize.define(
+  "fasting",
+  {
+    
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    body: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    author_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  },
+  {
+    
+    tableName: "fasting",
+  }
+);
+
+//  модель  3
+
+const journal = sequelize.define(
+  "journal",
+  {
+   
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    user_from: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    user_to: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    amount: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+  },
+  {
+   
+    tableName: "journal",
+    timestamps: false,
+  }
+);
+
+
+(async () => {
+  try {
+    await User.sync({
+      alter: true,
+      force: false,
+    });
+    await Posty.sync({
+      alter: true,
+      force: false,
+    });
+    await journal.sync({
+      alter: true,
+      force: false,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+
+
+  
+
+})();
